@@ -1,13 +1,20 @@
-mod tokenize;
+pub mod calculator;
 
-use std::io;
-use tokenize::Tokenizer;
+fn main() {
+    /* let mut line = String::new();
+    io::stdin().read_line(&mut line)?; */
 
-fn main() -> io::Result<()> {
-    let mut line = String::new();
-    io::stdin().read_line(&mut line)?;
+    let line = "14+9";
 
-    let token_list = Tokenizer::list_from(line);
+    let Ok(tokens) = calculator::parse(line) else {
+        eprintln!("Parse failed!");
+        std::process::exit(1)
+    };
 
-    Ok(())
+    let Ok(result) = calculator::eval(&tokens)  else {
+        eprintln!("Eval failed!");
+        std::process::exit(1)
+    };
+
+    println!("{result:?}");
 }
